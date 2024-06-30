@@ -1,6 +1,6 @@
 import sqlalchemy
 from sqlalchemy import create_engine
-import clickhouse-connect
+import clickhouse_connect
 from dotenv import load_dotenv
 import os 
 
@@ -35,6 +35,13 @@ def get_postgres_engine():
 
     Returns: 
      - sqlalchemy engine (sqlalchemy.engine.Engine)
-
     '''
-    engine = create_engine()
+    engine = create_engine("postgresql+psycop2://{user}:{password}@{host}:{port}/{dbname})".format(
+                            user = os.getenv('pg_user'),
+                            password = os.getenv('pg_password'),
+                            host = os.getenv('pg_host'),
+                            port = os.getenv('pg_port'),
+                            dbname = os.getenv('pg_dbname')         
+                            )
+                            )
+    return engine

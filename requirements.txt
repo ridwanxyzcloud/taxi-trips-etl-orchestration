@@ -1,3 +1,4 @@
 sqlalchemy
 clickhouse-connect
 python-dotenv
+pandas
