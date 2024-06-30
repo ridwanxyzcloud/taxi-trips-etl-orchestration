@@ -2,3 +2,4 @@ sqlalchemy
 clickhouse-connect
 python-dotenv
 pandas
+psycopg2-binary

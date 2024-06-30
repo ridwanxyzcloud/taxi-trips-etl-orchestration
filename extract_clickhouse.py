@@ -23,4 +23,4 @@ def fetch_data(client, query):
     df = pd.DataFrame(rows, columns=cols)
     df.to_csv('tripsdata.csv', index=False)
 
-    print(f'{len(df)} rows successfully extracted from TaxiTrip Database')
+    print(f'{len(df)} rows successfully extracted from clickhouse Database')
