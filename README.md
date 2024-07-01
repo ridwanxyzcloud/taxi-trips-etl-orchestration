@@ -1,6 +1,8 @@
 # Taxi Trips ETL Orchestration 
 
+![Taxi Trips ETL Architecture](assets/taxitrip_etl_architecture.jpg)
 
+## Overview
 - This project used modular coding to systematically define an ETL job with seperate and well defined logic.
 - this architecture extracts data from the source (clickhouse), writes to a csv file, then load to a staging environment. from a staging environment
 - The data in the staging environment is aggregated and transformed to an enterprise data warehouse using SQL procedure. 
