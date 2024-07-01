@@ -1,10 +1,15 @@
 # Taxi Trips ETL Orchestration 
 
-- This project used modular coding to systematically define an ETL job with seperate and well defined logic
-- this architecture extracts data from the source (clickhouse), writes to a csv file, then load to a staging environment. from a staging environment
-- The data in the staging environment is aggregated and transformed to an enterprise data warehouse where the data is ready to be used for all necessary analytics 
 
-- github.demo.trial.altinity.cloud 
+- This project used modular coding to systematically define an ETL job with seperate and well defined logic.
+- this architecture extracts data from the source (clickhouse), writes to a csv file, then load to a staging environment. from a staging environment
+- The data in the staging environment is aggregated and transformed to an enterprise data warehouse using SQL procedure. 
+- Aggregated data in the EDW schema is ready to be used for all necessary analytics and reporting.
+
+### Dataset
+
+- `https://github.demo.trial.altinity.cloud`
+{username : 'demo' , password : 'demo'}
 
 # Steps
 
@@ -27,7 +32,7 @@ The 'result' is written to a csv file waiting to be loaded to a staging area.
 This module contains a function that defines the logic for loading the extracted data incrementally into a staging table on a postgres database.
 
 ### 4. `Test` directory
-The test directory conatians unit test for the modules of the project. 
+The test directory conatians modular and manual testing for the modules of the project. These tests are to verify the code in the staging part of the project.
 
 ### 5. The `main.py`: The Pipeline
 The `main.py` defines house the logic of the pipeline.
@@ -36,3 +41,20 @@ The `main.py` defines house the logic of the pipeline.
 - Performs an incremental loading to the staging table 
 
 # Production part of the project
+
+The production stage is where the transformation happens and data collected are aggregated.
+- `daily_agg_tripdata` is a table in the `EDW` schema of the datawarehouse. The table will house the daily aggreagte of data useful for analysis and report for the business.
+- `daily_agg_tripdata_channel` is also a table in the `EDW` schema and house daily aggregate for payment channel
+
+## Procedures for aggregates 
+The procedure is created in the staging area which is in the `stg` schema of the database. 
+Quick One: I am leaving it in the staging as analysts or other stakeholders does not need to see it.  
+The procedure  `agg_tripsdata()` handles three tthings :
+- i. `daily_agg_tripsdata`: The procedure aggregates the daily_aggregate_trips data and INSERT result into the `daily_agg_tripsdata` table in the production area.
+- ii. `daily_agg_tripsdata_channel`: This part of the procedure aggregates the data for payment channel in the production area
+- iii. `procedure_logs`: The procedures handle EXCEPTION and logs error or stutus of the procedure anytime it is called or run.
+    This is done so status of the procedure can be properly monitored in case there is any error.
+
+#### Caling the Procedure
+`CALL "stg".agg_tripsdata();` 
+

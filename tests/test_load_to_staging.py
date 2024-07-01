@@ -4,7 +4,7 @@ import os
 # Adding the parent directory to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from helpers import get_postgres_engine, get_postgres_engine2
+from db_utils import get_postgres_engine, get_postgres_engine2
 from load_to_staging import load_csv_to_postgres
 
 # define paarameters
