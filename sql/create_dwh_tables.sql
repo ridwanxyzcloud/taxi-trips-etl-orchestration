@@ -1,6 +1,6 @@
 
 --- daily aggregate tripdata table
-CREATE TABLE IF NOT EXISTS "EDW".daily_agg_tripdata(
+CREATE TABLE IF NOT EXISTS "EDW".daily_agg_tripsdata(
 	pickup_date date primary key,
 	total_passenger_count int,
 	avg_passenger_count float,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS "EDW".daily_agg_tripdata(
 );
 
 --- daily aggregate tripdata payment channel table  
-CREATE TABLE IF NOT EXISTS "EDW".daily_avg_tripdata_channel(
+CREATE TABLE IF NOT EXISTS "EDW".daily_avg_tripsdata_channel(
 	pickup_date date NOT NULL,
 	payment_type text,
 	toatl_passenger_count int,

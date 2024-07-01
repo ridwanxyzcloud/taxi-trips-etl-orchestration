@@ -1,13 +1,15 @@
 from db_utils import get_client, get_postgres_engine, get_postgres_engine2
 from extract_clickhouse import fetch_data
 from load_to_staging import load_csv_to_postgres
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import text
 
 # extract parameters
 client = get_client()
 query = '''
 
         SELECT * FROM tripdata
-        where year(pickup_date) = 2015 and month(pickup_date) = 1 and dayofmonth(pickup_date) = 1
+        where year(pickup_date) = 2015 and month(pickup_date) = 1 and dayofmonth(pickup_date) = 2
 
         '''
 # load parameters
@@ -33,6 +35,15 @@ def main():
 
     # Load data to staging table
     load_csv_to_postgres(csv_file_path, table_name, engine, schema)
+    
+    # Execute stored procedure
+    # transformation procedure for enterprise/ production use daily aggregate 
+    session = sessionmaker(bind=engine)
+    session = session()
+    session.execute(text('CALL "stg".agg_tripsdata();'))
+    session.commit()
+
+    print('stored procedure executed and transfomation successfull')
 
     print('Pipeline executed successfully')
 

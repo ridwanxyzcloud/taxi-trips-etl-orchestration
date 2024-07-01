@@ -40,6 +40,7 @@ The test directory conatians modular and manual testing for the modules of the p
 The `main.py` defines house the logic of the pipeline.
 - The pipeline fetches data from source database(clickhouse) as a query result and save to csv from a dataframe
 - Loads the data from a csv file directly to a staging table 'tripdata' on postgres using sqlachemy.engine
+- Exceute stored procedure that transform data and save output aggregate to Enterprise Datawarehouse for production use.
 - Performs an incremental loading to the staging table 
 
 # Production part of the project
@@ -57,6 +58,8 @@ The procedure  `agg_tripsdata()` handles three tthings :
 - iii. `procedure_logs`: The procedures handle EXCEPTION and logs error or stutus of the procedure anytime it is called or run.
     This is done so status of the procedure can be properly monitored in case there is any error.
 
-#### Caling the Procedure
-`CALL "stg".agg_tripsdata();` 
+#### The Procedure
+To call the procedure which transforms the data and output aggregates, `sessionmaker` is imported from `sqlalchemy.orm` to create a sessi
+`from sqlalchemy.orm import sessionmaker`
+`CALL "stg".agg_tripsdata();` can now be added to the script `main.py` which is the pipeline 
 
