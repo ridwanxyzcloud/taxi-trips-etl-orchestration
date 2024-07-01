@@ -9,7 +9,7 @@ client = get_client()
 query = '''
 
         SELECT * FROM tripdata
-        where year(pickup_date) = 2015 and month(pickup_date) = 1 and dayofmonth(pickup_date) = 2
+        where year(pickup_date) = 2016 and month(pickup_date) = 1 and dayofmonth(pickup_date) = 1
 
         '''
 # load parameters

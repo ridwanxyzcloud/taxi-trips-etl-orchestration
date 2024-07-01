@@ -63,3 +63,4 @@ To call the procedure which transforms the data and output aggregates, `sessionm
 `from sqlalchemy.orm import sessionmaker`
 `CALL "stg".agg_tripsdata();` can now be added to the script `main.py` which is the pipeline 
 
+## Automation and Orchestration with Apache Airflow
