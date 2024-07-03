@@ -64,3 +64,26 @@ To call the procedure which transforms the data and output aggregates, `sessionm
 `CALL "stg".agg_tripsdata();` can now be added to the script `main.py` which is the pipeline 
 
 ## Automation and Orchestration with Apache Airflow
+
+` airflow db init` to initilize the airflow database
+
+##### Export the Airflow DAGs folder environment variable
+`export AIRFLOW__CORE__DAGS_FOLDER=$(pwd)/dags`
+Alternatively :
+
+In the `airflow.cfg` file, set `dags_folder=$(pwd)/dags`
+
+Alternatively vopy your dag to airflow/dag 
+
+dags_folder = `cp /Users/villy/Documents/GitHub/taxi-trips-etl-orchestration/dags/taxi_trips_dag.py /Users/villy/airflow/dags`
+
+`airflow scheduler`  to start the airflow 
+
+` airflow websever` for User Interface for proper monitoring 
+
+Apache airflow is the task scheduler used for this project as define in the script 
+`[airflow dag](dags/taxi_trips_dag.py)`
+- It uses DAG (Directed Acyclic graphs) to define and schedule the Taxi tripdata pipeline.
+- The job flow is impplemented using PythonOperator 
+- The dags is configured and scheduled to run daily.
+- Error logging is included in the dag script for proper debugging and monitoring.
