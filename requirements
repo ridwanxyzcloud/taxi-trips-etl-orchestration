@@ -3,4 +3,5 @@ clickhouse-connect
 python-dotenv
 pandas
 psycopg2-binary
-apache-airflow
+snowflake-connector-python 
+snowflake-sqlalchemy

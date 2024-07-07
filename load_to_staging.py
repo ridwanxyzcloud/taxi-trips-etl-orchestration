@@ -1,4 +1,5 @@
 import pandas as pd 
+from sqlalchemy.engine import Engine
 
 def load_csv_to_postgres(csv_file_path, table_name, engine, schema):
     '''
@@ -18,3 +19,6 @@ def load_csv_to_postgres(csv_file_path, table_name, engine, schema):
     df.to_sql(table_name, con=engine, if_exists='replace', index=False, schema=schema)
 
     print(f'{len(df)} rows loaded successfully to {table_name}')
+
+
+# loading to snowflake

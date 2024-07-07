@@ -4,6 +4,7 @@ import clickhouse_connect
 from dotenv import load_dotenv
 import os 
 from sqlalchemy.engine import URL
+from snowflake.sqlalchemy import URL
 
 load_dotenv(override=True)
 
@@ -37,15 +38,15 @@ def get_postgres_engine():
     Returns: 
      - sqlalchemy engine (sqlalchemy.engine.Engine)
     '''
-    engine = create_engine("postgresql+psycopg2://{user}:{password}@{host}:{port}/{dbname}".format(
-                            user = os.getenv('pg_user'),
-                            password = os.getenv('pg_password'),
-                            host = os.getenv('pg_host'),
-                            port = os.getenv('pg_port'),
-                            dbname = os.getenv('pg_dbname')         
-                            )
-                            )
+    user = os.getenv('pg_user')
+    password = os.getenv('pg_password')
+    host = os.getenv('pg_host')
+    port = os.getenv('pg_port')
+    dbname = os.getenv('pg_dbname')
+    connection_string = f'postgresql+psycopg2://{user}:{password}@{host}:{port}/{dbname}'
+    engine = create_engine(connection_string)
     return engine
+
 
 ## Additional postgres engine for macOS 
 
@@ -59,6 +60,36 @@ def get_postgres_engine2():
         port=os.getenv('pg_port'),
         database=os.getenv('pg_dbname')
     )
+    # Create engine
+    engine = create_engine(connection_url)
+    return engine
+
+# snowflake connection 
+
+def get_snowflake_connection():
+
+    '''
+    constructs a SQLalchemy engine object for snowflake DB from .env file
+
+    parameter: None
+
+    Returns: 
+     - sqlalchemy engine (sqlalchemy.engine.Engine)
+    '''
+
+    # Define the connection string format
+    connection_string = "snowflake://{user}:{password}@{account}/{database}/{schema}?warehouse={warehouse}"
+
+    # Substitute environment variables into the format
+    connection_url = connection_string.format(
+        user=os.getenv('sn_user'),
+        password=os.getenv('sn_password'),
+        account=os.getenv('sn_account_identifier'),
+        database=os.getenv('sn_database'),
+        schema=os.getenv('sn_schema'),
+        warehouse=os.getenv('sn_warehouse')
+    )
+
     # Create engine
     engine = create_engine(connection_url)
     return engine

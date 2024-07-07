@@ -65,6 +65,32 @@ To call the procedure which transforms the data and output aggregates, `sessionm
 
 ## Automation and Orchestration with Apache Airflow
 
+- Using docker image of apache airflow 
+`curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.9.2/docker-compose.yaml'`
+
+- Create a `dockefile`
+- Build and run docker compose project 
+`docker compose -p taxi-trips-etl up --build`
+
+- Initialize airflow 
+`docker compose -p `taxi-trips-etl up airflow-init`
+
+- To stop the service 
+`docker compose -p taxi-trips-etl down`
+
+#### storage for extracted file 
+- Mount a volume for extracted file with a directory name `raw_data`
+- Delacare this in the `docker-compose.yml` configuration file
+`- ${AIRFLOW_PROJ_DIR:-.}/raw_data:/opt/airflow/raw_data
+
+- This volume will now hold the extracted data when ingested into the pipeline from the click-house.
+
+- compose docker down to stop it and up agaoin to effect the changes made 
+
+
+` airflow db init` to initilize the airflow database
+
+
 ` airflow db init` to initilize the airflow database
 
 ##### Export the Airflow DAGs folder environment variable
@@ -87,3 +113,6 @@ Apache airflow is the task scheduler used for this project as define in the scri
 - The job flow is impplemented using PythonOperator 
 - The dags is configured and scheduled to run daily.
 - Error logging is included in the dag script for proper debugging and monitoring.
+
+
+`curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.9.2/docker-compose.yaml'`

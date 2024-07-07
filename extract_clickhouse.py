@@ -21,6 +21,6 @@ def fetch_data(client, query):
 
     # write 'result' to pandas .csv file
     df = pd.DataFrame(rows, columns=cols)
-    df.to_csv('tripsdata.csv', index=False)
+    df.to_csv(r'raw_data\tripsdata.csv', index=False)
 
     print(f'{len(df)} rows successfully extracted from clickhouse Database')

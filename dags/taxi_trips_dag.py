@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # imoport fucntion from other modules in the parent directory (project repository)
-from db_utils import get_client, get_postgres_engine, get_postgres_engine2
+from db_utils import get_client, get_postgres_engine, get_postgres_engine2 
 from extract_clickhouse import fetch_data
 from load_to_staging import load_csv_to_postgres
 from sqlalchemy.orm import sessionmaker
