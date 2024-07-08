@@ -1,8 +1,9 @@
 from db_utils import get_client, get_postgres_engine, get_postgres_engine2
 from extract_clickhouse import fetch_data
-from load_to_staging import load_csv_to_postgres
+from load_data import load_csv_to_postgres
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text
+from datetime import datetime, timedelta
 
 # extract parameters
 client = get_client()

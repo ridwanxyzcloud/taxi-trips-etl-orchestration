@@ -1,14 +1,16 @@
 import sys
 import os
 
-# Adding the parent directory to the Python path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# Add the project root to PYTHONPATH
+sys.path.append('/opt/airflow')
 
 from db_utils import get_client
-from extract_clickhouse import fetch_data
+from extract_clickhouse import ini_fetch_data, fetch_data
 
 client = get_client()
-query = 'SELECT * FROM tripdata'
+query = ''' 
+        SELECT pickup_date, vendor_id, passenger_count, trip_distance, payment_type, fare_amount, tip_amount 
+        FROM tripdata'''
 
 # Execute the fetch data with parameters client and query
-fetch_data(client=client, query=query)
+ini_fetch_data(client=client, query=query)

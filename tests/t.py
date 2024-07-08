@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from db_utils import get_postgres_engine, get_snowflake_connection
-from load_to_staging import load_csv_to_postgres
+from load_data import load_csv_to_postgres
 
 if __name__ == "__main__":
     csv_file_path = r'C:\Users\villy\Documents\GitHub\taxi-trips-etl-orchestration\tripsdata.csv' 

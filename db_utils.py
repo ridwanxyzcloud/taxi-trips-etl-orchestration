@@ -3,8 +3,8 @@ from sqlalchemy import create_engine
 import clickhouse_connect
 from dotenv import load_dotenv
 import os 
-from sqlalchemy.engine import URL
 from snowflake.sqlalchemy import URL
+import snowflake.connector
 
 load_dotenv(override=True)
 
@@ -52,7 +52,7 @@ def get_postgres_engine():
 
 def get_postgres_engine2():
     # Use URL object to create connection string
-    connection_url = URL.create(
+    connection_url = URL(
         drivername="postgresql+psycopg2",
         username=os.getenv('pg_user'),
         password=os.getenv('pg_password'),
@@ -66,30 +66,34 @@ def get_postgres_engine2():
 
 # snowflake connection 
 
-def get_snowflake_connection():
+def get_snowflake_engine():
 
     '''
-    constructs a SQLalchemy engine object for snowflake DB from .env file
+    constructs a snowflake engine object for snowflake DB from .env file
 
     parameter: None
 
     Returns: 
-     - sqlalchemy engine (sqlalchemy.engine.Engine)
+     - snowflake-connector engine (sqlalchemy.Engine)
     '''
 
-    # Define the connection string format
-    connection_string = "snowflake://{user}:{password}@{account}/{database}/{schema}?warehouse={warehouse}"
+    # create engine for snowflake
+    try:
+        # Create Snowflake URL
+        snowflake_url = URL(
+            user=os.getenv('sn_user'),
+            password=os.getenv('sn_password'),
+            account=os.getenv('sn_account_identifier'),
+            database=os.getenv('sn_database'),
+            schema=os.getenv('sn_schema'),
+            warehouse=os.getenv('sn_warehouse'),
+            role=os.getenv('sn_role')
+        )
 
-    # Substitute environment variables into the format
-    connection_url = connection_string.format(
-        user=os.getenv('sn_user'),
-        password=os.getenv('sn_password'),
-        account=os.getenv('sn_account_identifier'),
-        database=os.getenv('sn_database'),
-        schema=os.getenv('sn_schema'),
-        warehouse=os.getenv('sn_warehouse')
-    )
+        # Create SQLAlchemy engine and return it
+        engine = create_engine(snowflake_url)
+        return engine
 
-    # Create engine
-    engine = create_engine(connection_url)
-    return engine
+    except Exception as e:
+        print(f"Error creating Snowflake engine: {e}")
+        return None

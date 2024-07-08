@@ -73,7 +73,7 @@ To call the procedure which transforms the data and output aggregates, `sessionm
 `docker compose -p taxi-trips-etl up --build`
 
 - Initialize airflow 
-`docker compose -p `taxi-trips-etl up airflow-init`
+`docker compose -p taxi-trips-etl up airflow-init`
 
 - To stop the service 
 `docker compose -p taxi-trips-etl down`
@@ -85,34 +85,35 @@ To call the procedure which transforms the data and output aggregates, `sessionm
 
 - This volume will now hold the extracted data when ingested into the pipeline from the click-house.
 
-- compose docker down to stop it and up agaoin to effect the changes made 
+##### Adding Project Root Environment to Airflow 
+- This allows airflow to read modules located in the project root directory 
+`PYTHONPATH: /opt/airflow` 
 
+##### Mounting Project Root Directory on Airflow Volume 
+- Simultaneouly, the project root directory is mounted as a volume so Airflow can mirror it and will be able to read files in it. 
+`${AIRFLOW_PROJ_DIR:-.}:/opt/airflow`
 
-` airflow db init` to initilize the airflow database
+- compose docker down to stop it and up again to effect the changes made 
+- 
+#### Bash Commands to Interact with Docker
+Docker is a linux engine and since it cannot be navigated using windows UI.
+List running containers along with their ID, which can be used to acccess the container with bash commands  
+`docker ps`
 
+`docker exec -it ef32d807dcf2 bash` 
+- This let you navigate to the airflow:webserver container , you can then list content in the container using 
+ `ls`   . To exit the container 'exit`
 
-` airflow db init` to initilize the airflow database
-
-##### Export the Airflow DAGs folder environment variable
-`export AIRFLOW__CORE__DAGS_FOLDER=$(pwd)/dags`
-Alternatively :
-
-In the `airflow.cfg` file, set `dags_folder=$(pwd)/dags`
-
-Alternatively vopy your dag to airflow/dag 
-
-dags_folder = `cp /Users/villy/Documents/GitHub/taxi-trips-etl-orchestration/dags/taxi_trips_dag.py /Users/villy/airflow/dags`
 
 `airflow scheduler`  to start the airflow 
 
 ` airflow websever` for User Interface for proper monitoring 
 
 Apache airflow is the task scheduler used for this project as define in the script 
-`[airflow dag](dags/taxi_trips_dag.py)`
+`[airflow dag](dags/taxi_trips_etl.py)`
 - It uses DAG (Directed Acyclic graphs) to define and schedule the Taxi tripdata pipeline.
 - The job flow is impplemented using PythonOperator 
-- The dags is configured and scheduled to run daily.
+- The dags is configured and scheduled to run daily. Sceduling can be properly defined using
+`https://crontab.guru`
 - Error logging is included in the dag script for proper debugging and monitoring.
 
-
-`curl -LfO 'https://airflow.apache.org/docs/apache-airflow/2.9.2/docker-compose.yaml'`

@@ -5,3 +5,5 @@ logs\*
 plugins/*
 plugins\*
 .env
+webserver_config.py
+project_test.ipynb
