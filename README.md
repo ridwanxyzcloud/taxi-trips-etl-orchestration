@@ -117,3 +117,6 @@ Apache airflow is the task scheduler used for this project as define in the scri
 `https://crontab.guru`
 - Error logging is included in the dag script for proper debugging and monitoring.
 
+
+
+datetime(year=2024, month=7, day=2)

@@ -10,7 +10,7 @@ from load_data import load_csv_to_snowflake
 # define paarameters
 engine = get_snowflake_engine()
 schema = 'STG'
-table_name = 'tripsdata'
+table_name = 'src_tripsdata'
 csv_file_path = './raw_data/tripsdata.csv'
 
 # execute the load_to_staging function

@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from sqlalchemy.orm import sessionmaker
 
-# functions to fech data from source
+# functions to fetch bulk data from source
 def ini_fetch_data(client, query):
     '''
     fetches query results from a clickhouse database and writes to a csv file
@@ -28,7 +28,7 @@ def ini_fetch_data(client, query):
 
     print(f'{len(df)} rows successfully extracted from clickhouse Database')
 
-
+# Function for incremental fetching of data from source 
 def fetch_data(client, engine):
     '''
     fetches query results from a clickhouse database and writes to a csv file
@@ -45,7 +45,7 @@ def fetch_data(client, engine):
     '''    
     session = sessionmaker(bind=engine)
     session = session()
-    result = session.execute('select max(pickup_date) from "STG".tripsdata')
+    result = session.execute('select max(pickup_date) from "STG".src_tripsdata')
     max_date = result.fetchone()[0]
     session.close()
 
@@ -55,7 +55,7 @@ def fetch_data(client, engine):
     query = f'''
         select pickup_date, vendor_id, passenger_count, trip_distance, payment_type, fare_amount, tip_amount
         from tripdata
-        where pickup_date = toDate('(max_date)') + 1
+        where pickup_date = toDate('{max_date}') + 1
         '''
     
     # execute the query

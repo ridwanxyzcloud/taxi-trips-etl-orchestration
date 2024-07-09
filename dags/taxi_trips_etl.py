@@ -22,6 +22,7 @@ from load_data import load_csv_to_snowflake, execute_procedure
 engine = get_snowflake_engine()
 client = get_client()
 
+
 ## default arguement 
 default_args = {
     'owner': 'ridwanclouds',
@@ -37,7 +38,7 @@ with DAG(
     default_args=default_args,
     description='Taxi Trips ETL pipeline for tripsdata',
     schedule_interval='0 0 * * *',
-    start_date=days_ago(1),
+    start_date=datetime(year=2024, month=7, day=3),
     catchup=False,
 ) as dag:
     
@@ -59,7 +60,7 @@ with DAG(
     staging_load_task = PythonOperator(
         task_id = 'stg_load',
         python_callable=load_csv_to_snowflake,
-        op_kwargs = {'table_name': 'tripsdata', 'engine': engine, 'schema': 'STG'}      
+        op_kwargs = {'csv_file_path': './raw_data/tripsdata.csv','table_name': 'src_tripsdata', 'engine': engine, 'schema': 'STG'}      
     )
 
     # Loading to production
